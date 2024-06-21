@@ -1,0 +1,44 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "Données de connexion",
+                "description": "Veuillez saisir vos données de connexion à APSchool",
+                "data": {
+                    "base_url": "APSchool API URL",
+                    "username": "Nom d'utilisateur",
+                    "password": "Mot de passe",
+                    "scan_interval": "Scan Interval (minutes)"
+                },
+                "data_description": {
+                    "base_url": "L'URL de base pour les appels API. Gardez la valeur par défaut en cas de doute"
+                }
+            }
+        },
+        "error": {
+            "auth": "Utilisateur/Mot de passe erroné.",
+            "connection": "Impossible de se connecter au serveur.",
+            "unknown": "Une erreur inconnue s'est produite."
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "description": "Personnalisation du fonctionnement de l'intégration",
+                "data": {
+                    "scan_interval": "Interval de rafraichissement (en minutes)"
+                }
+            }
+        }
+    },
+    "entity": {
+        "sensor": {
+            "firstname": {
+                "name": "Prénom"
+            },
+            "lastname": {
+                "name": "Nom"
+            }
+        }
+    }
+}

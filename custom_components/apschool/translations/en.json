@@ -1,0 +1,40 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "Login credentials",
+                "description": "Please, provide the credentials to login to APSchool",
+                "data": {
+                    "base_url": "APSchool API URL",
+                    "username": "Username",
+                    "password": "Password",
+                    "scan_interval": "Scan Interval (minutes)"
+                },
+                "data_description": {
+                    "base_url": "The base URL to use for the API calls. If you are not sure, keep the default value"
+                }
+            }
+        },
+        "error": {
+            "auth": "Username/Password is wrong.",
+            "connection": "Unable to connect to the server.",
+            "unknown": "Unknown error occurred."
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "description": "Customize the way the integration works",
+                "data": {
+                    "scan_interval": "Data refresh interval (in minutes)"
+                }
+            }
+        }
+    },
+    "entity": {
+        "sensor": {
+            "firstname": "Firstname",
+            "lastname": "Lastname"
+        }
+    }
+}

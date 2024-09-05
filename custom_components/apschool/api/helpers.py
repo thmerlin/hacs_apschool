@@ -2,6 +2,7 @@
 """
 
 import datetime
+import json
 
 
 class UnreadMessage:
@@ -42,3 +43,10 @@ class UserData:
         self.school_class = school_class
         self.balance = balance
         self.unread_messages = unread_messages
+
+    def to_json(self):
+        """Output the object as a inline JSON"""
+        return json.dumps(
+            self,
+            default=lambda o: o.__dict__,
+        )

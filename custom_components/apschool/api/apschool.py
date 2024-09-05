@@ -152,11 +152,12 @@ class ApschoolApiClient:
                 id=self.current_user_id,
                 firstname=json_response.get("prenom"),
                 lastname=json_response.get("nom"),
-                school_class=link.get("classe"),
+                school_class=json_response.get("classe").get("libelle"),
                 balance=await self._async_get_balance(),
                 unread_messages=await self._async_get_unread_messages(),
             )
 
+            _LOGGER.debug("Data retrieved: %s", user_data.to_json())
             users.append(user_data)
 
         return users

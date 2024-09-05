@@ -25,7 +25,8 @@
                 "ms-python.black-formatter",
                 "mhutchie.git-graph",
                 "donjayamanne.githistory",
-                "codezombiech.gitignore"
+                "codezombiech.gitignore",
+                "eamodio.gitlens"
             ],
             "settings": {
                 "files.eol": "\n",

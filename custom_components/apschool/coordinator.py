@@ -34,17 +34,14 @@ class ApschoolDataUpdateCoordinator(DataUpdateCoordinator):
         config_entry: ConfigEntry,
     ) -> None:
         """Initialize."""
-        self.client = client
         interval = timedelta(
             minutes=config_entry.options.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
-            # minutes=config_entry.options.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
         )
         super().__init__(
-            hass=hass,
-            logger=LOGGER,
-            name=DOMAIN,
-            update_interval=interval,
+            hass=hass, logger=LOGGER, name=DOMAIN, update_interval=interval
         )
+
+        self.client = client
 
     async def _async_update_data(self):
         """Update data via library."""

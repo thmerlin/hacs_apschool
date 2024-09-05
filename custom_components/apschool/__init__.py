@@ -9,20 +9,20 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .api.apschool import ApschoolApiClient
-from .const import DOMAIN
+from .const import DOMAIN, LOGGER
 from .coordinator import ApschoolDataUpdateCoordinator
 
 PLATFORMS: list[Platform] = [
     Platform.SENSOR,
-    # Platform.BINARY_SENSOR,
-    # Platform.SWITCH,
 ]
 
 
 # https://developers.home-assistant.io/docs/config_entries_index/#setting-up-an-entry
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Set up this integration using UI."""
+    """Set up apschool from a config entry."""
+    LOGGER.debug("Integration async setup entry: %s", entry.as_dict())
     hass.data.setdefault(DOMAIN, {})
+
     hass.data[DOMAIN][entry.entry_id] = coordinator = ApschoolDataUpdateCoordinator(
         hass=hass,
         client=ApschoolApiClient(

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Any
 
 from homeassistant.components.sensor import SensorEntity, SensorEntityDescription
 from homeassistant.config_entries import ConfigEntry
@@ -12,7 +13,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from custom_components.apschool.api.helpers import UserData
 
-from .const import ATTRIBUTION, DOMAIN
+from .const import ATTRIBUTION, DOMAIN, LOGGER
 from .coordinator import ApschoolDataUpdateCoordinator
 from .entity import ApschoolEntity
 
@@ -59,6 +60,7 @@ class ApschoolSensor(ApschoolEntity, SensorEntity):
         self._attr_unique_id = user_data.id
         self._user_data = user_data
         self._attr_native_unit_of_measurement = CURRENCY_EURO
+        self.attrs: dict[str, Any] = None
 
     @property
     def icon(self) -> str:
@@ -73,25 +75,39 @@ class ApschoolSensor(ApschoolEntity, SensorEntity):
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        return self._user_data.balance
+        return self._determine_native_value()
 
     @property
-    def extra_state_attributes(self) -> dict:
+    def extra_state_attributes(self) -> dict[str, Any]:
         """Return the state attributes."""
-        return {
-            ATTR_ATTRIBUTION: ATTRIBUTION,
-            "firstname": self._user_data.firstname,
-            "lastname": self._user_data.lastname,
-            "school_class": self._user_data.school_class,
-            "balance": self._user_data.balance,
-            "unread_messages": (
-                len(self._user_data.unread_messages)
-                if self._user_data.unread_messages is not None
-                else 0
-            ),
-        }
 
-    # @property
-    # def suggested_unit_of_measurement(self) -> str:
-    #     """Return the unit of measurement this sensor expresses itself in."""
-    #     return "€"
+        # Get the coordinator data for our sensor id
+        for data in self.coordinator.data:
+            if data.id == self._user_data.id:
+                self.attrs = {
+                    ATTR_ATTRIBUTION: ATTRIBUTION,
+                    "firstname": data.firstname,
+                    "lastname": data.lastname,
+                    "school_class": data.school_class,
+                    "balance": data.balance,
+                    "unread_messages": (
+                        len(data.unread_messages) if data.unread_messages is not None else 0
+                    ),
+                }
+                return self.attrs
+
+        LOGGER.error(
+            "extra_state_attributes - Could not find data of our sensor %s from the coordinator", self._user_data.id)
+        return None
+
+    def _determine_native_value(self):
+        """Determine native value."""
+        # Get the coordinator data for our sensor id
+        for user in self.coordinator.data:
+            if user.id == self._user_data.id:
+                return user.balance
+
+        LOGGER.error(
+            "determine_native_value - Could not find data of our sensor %s from the coordinator", self._user_data.id)
+
+        return 0

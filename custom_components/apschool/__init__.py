@@ -17,6 +17,9 @@ PLATFORMS: list[Platform] = [
 ]
 
 
+# async def async_setup(hass: HomeAssistant, config: dict):
+#     """Set up this component using YAML file. We do not support this. So the method is commented out just to remember that it is not a mistake to not have that method defined """
+
 # https://developers.home-assistant.io/docs/config_entries_index/#setting-up-an-entry
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up apschool from a config entry."""

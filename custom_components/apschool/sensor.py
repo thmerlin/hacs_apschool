@@ -57,7 +57,7 @@ class ApschoolSensor(ApschoolEntity, SensorEntity):
         super().__init__(coordinator)
 
         self.has_entity_name = True
-        self._attr_unique_id = user_data.id
+        self._attr_unique_id = user_data.user_id
         self._user_data = user_data
         self._attr_native_unit_of_measurement = CURRENCY_EURO
         self.attrs: dict[str, Any] = None
@@ -83,7 +83,7 @@ class ApschoolSensor(ApschoolEntity, SensorEntity):
 
         # Get the coordinator data for our sensor id
         for data in self.coordinator.data:
-            if data.id == self._user_data.id:
+            if data.user_id == self._user_data.user_id:
                 self.attrs = {
                     ATTR_ATTRIBUTION: ATTRIBUTION,
                     "firstname": data.firstname,
@@ -93,21 +93,22 @@ class ApschoolSensor(ApschoolEntity, SensorEntity):
                     "unread_messages": (
                         len(data.unread_messages) if data.unread_messages is not None else 0
                     ),
+                    "due_amount": data.due_amount,
                 }
                 return self.attrs
 
         LOGGER.error(
-            "extra_state_attributes - Could not find data of our sensor %s from the coordinator", self._user_data.id)
+            "extra_state_attributes - Could not find data of our sensor %s from the coordinator", self._user_data.user_id)
         return None
 
     def _determine_native_value(self):
         """Determine native value."""
         # Get the coordinator data for our sensor id
         for user in self.coordinator.data:
-            if user.id == self._user_data.id:
+            if user.user_id == self._user_data.user_id:
                 return user.balance
 
         LOGGER.error(
-            "determine_native_value - Could not find data of our sensor %s from the coordinator", self._user_data.id)
+            "determine_native_value - Could not find data of our sensor %s from the coordinator", self._user_data.user_id)
 
         return 0

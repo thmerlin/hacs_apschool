@@ -1,0 +1,32 @@
+{
+    "items": [
+        {
+            "id": 1307847,
+            "titre": "Rappel photos scolaires",
+            "ouvert": false,
+            "archive": false,
+            "typeMessage": 4,
+            "pieceJointes": false,
+            "dateCreation": "2024-04-25T10:42:08"
+        },
+        {
+            "id": 1283604,
+            "titre": "Objets perdus",
+            "ouvert": true,
+            "archive": false,
+            "typeMessage": 4,
+            "pieceJointes": false,
+            "dateCreation": "2024-04-22T09:59:52"
+        },
+        {
+            "id": 1253297,
+            "titre": "Rappel : journée salopette",
+            "ouvert": true,
+            "archive": false,
+            "typeMessage": 4,
+            "pieceJointes": false,
+            "dateCreation": "2024-04-16T15:33:20"
+        }
+    ],
+    "totalItems": 3
+}

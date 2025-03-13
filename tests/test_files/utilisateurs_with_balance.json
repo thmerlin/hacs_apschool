@@ -1,0 +1,62 @@
+{
+    "id": 209823,
+    "ecoleAuxiliaireId": 525,
+    "ecoleAuxiliaire": {
+        "id": 525,
+        "nom": "Nom école"
+    },
+    "nom": "Doe",
+    "prenom": "John",
+    "registreNational": "123456789",
+    "ficheScolarite": {
+        "id": 175718,
+        "matricule": "1985",
+        "numeroSiel": null,
+        "dateEntree": null,
+        "dateSortie": null,
+        "dateInscription": null
+    },
+    "sexe": false,
+    "inactif": false,
+    "nationalite": "Belge",
+    "casSocial": false,
+    "lieuDeNaissance": "Somewhere",
+    "numeroCarteIdentite": null,
+    "dateDebutCarteIdentite": null,
+    "dateFinCarteIdentite": null,
+    "compteBancaire": null,
+    "bic": null,
+    "typeUtilisateur": "Parent",
+    "interne": false,
+    "horaireAtypique": false,
+    "attestationDivisee": false,
+    "logementInternesUtilisateur": [],
+    "dateNaissance": "2016-06-13",
+    "adresse": {
+        "id": 632288,
+        "rue": "Milkyway, 42",
+        "ville": "Orion",
+        "codePostal": "123",
+        "pays": null
+    },
+    "contact": {
+        "id": 613359,
+        "email": null,
+        "emailEcole": null,
+        "telephone": null,
+        "mobile": null,
+        "envoyerEmail": true,
+        "langueMessageAutomatique": 0
+    },
+    "comptes": [
+        {
+            "id": 332488,
+            "solde": 23.86,
+            "typeCompte": 0,
+            "referenceCoda": "182163050085"
+        }
+    ],
+    "utilisateurParametre": null,
+    "classe": "C12345",
+    "classeId": 12861
+}

@@ -21,28 +21,31 @@ class UnreadMessage:
 class UserData:
     """UserData class"""
 
-    id: int
+    user_id: int
     firstname: str
     lastname: str
     school_class: str
     balance: float | None = None
     unread_messages: list[UnreadMessage] | None = None
+    due_amount: float = 0.0
 
     def __init__(
         self,
-        id: int,
+        user_id: int,
         firstname: str,
         lastname: str,
         school_class: str,
         balance: float | None,
         unread_messages: list[UnreadMessage] | None,
+        due_amount: float,
     ) -> None:
-        self.id = id
+        self.user_id = user_id
         self.firstname = firstname
         self.lastname = lastname
         self.school_class = school_class
         self.balance = balance
         self.unread_messages = unread_messages
+        self.due_amount = due_amount
 
     def to_json(self):
         """Output the object as a inline JSON"""

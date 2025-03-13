@@ -5,6 +5,7 @@
 import asyncio
 import logging
 import socket
+from typing import Any
 from urllib.parse import urljoin
 
 import aiohttp
@@ -58,7 +59,7 @@ class ApschoolApiClient:
             headers["Authorization"] = f"Bearer {self.token}"
         return headers
 
-    async def _async_authenticate(self) -> []:
+    async def _async_authenticate(self) -> list[Any]:
         """Authenticate against the API and store the bearer token and the user_id"""
         url = urljoin(self._base_url, "authentification")
         data = {
@@ -75,8 +76,10 @@ class ApschoolApiClient:
         return json_response.get("liaisons")
 
     async def _async_change_link(self, from_id: int, to_id: int):
-        """Change link is a method that set a new token for the "to_id", meaning that any request with that token will be dedicated to that ID"""
-        url = urljoin(self._base_url, f"authentification/{from_id}/liaisons/{to_id}")
+        """Change link is a method that set a new token for the "to_id",
+            meaning that any request with that token will be dedicated to that ID"""
+        url = urljoin(self._base_url,
+                      f"authentification/{from_id}/liaisons/{to_id}")
         json_response = await self._api_wrapper(
             method="POST", url=url, data=None, headers=self._set_headers()
         )
@@ -91,7 +94,8 @@ class ApschoolApiClient:
             None: When there is no unread message
         """
         url = urljoin(
-            self._base_url, f"/mediatr-utilisateurs/{self.current_user_id}/comptes"
+            self._base_url, f"/mediatr-utilisateurs/{
+                self.current_user_id}/comptes"
         )
 
         json_response = await self._api_wrapper(
@@ -111,7 +115,8 @@ class ApschoolApiClient:
             list[UnreadMessage]: List of unread messages (only the date and a title)
             None: When there is no unread message
         """
-        url = urljoin(self._base_url, f"/utilisateurs/{self.current_user_id}/messages")
+        url = urljoin(self._base_url,
+                      f"/utilisateurs/{self.current_user_id}/messages")
 
         json_response = await self._api_wrapper(
             method="GET", url=url, data=None, headers=self._set_headers()
@@ -124,6 +129,25 @@ class ApschoolApiClient:
         ]
 
         return messages if len(messages) > 0 else None
+
+    async def _async_get_due_amount(self):
+        """Get due amount from fees and others
+
+        Returns:
+            Total amount still due
+        """
+        url = urljoin(self._base_url,
+                      f"/ecoles/auxiliaires/525/utilisateurs/{self.current_user_id}/evenements")
+        params = {"afficherTermines": "false"}
+
+        json_response = await self._api_wrapper(
+            method="GET", url=url, data=None, headers=self._set_headers(), params=params,
+        )
+
+        total_amount = sum([float(res["evenement"]["prix"])
+                            for res in json_response["items"] if res["paye"] is False])
+
+        return total_amount
 
     async def async_get_user_data(self) -> list[UserData]:
         """Get all the user data from the APSchool website
@@ -149,12 +173,13 @@ class ApschoolApiClient:
             )
 
             user_data = UserData(
-                id=self.current_user_id,
+                user_id=self.current_user_id,
                 firstname=json_response.get("prenom"),
                 lastname=json_response.get("nom"),
                 school_class=json_response.get("classe").get("libelle"),
                 balance=await self._async_get_balance(),
                 unread_messages=await self._async_get_unread_messages(),
+                due_amount=await self._async_get_due_amount(),
             )
 
             _LOGGER.debug("Data retrieved: %s", user_data.to_json())
@@ -168,6 +193,7 @@ class ApschoolApiClient:
         url: str,
         data: dict | None = None,
         headers: dict | None = None,
+        params: dict | None = None,
     ) -> any:
         """Get information from the API."""
         try:
@@ -177,6 +203,7 @@ class ApschoolApiClient:
                     url=url,
                     headers=headers,
                     json=data,
+                    params=params,
                 )
                 if response.status in (400, 401, 403):
                     raise ApschoolApiClientAuthenticationError(

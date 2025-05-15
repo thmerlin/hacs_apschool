@@ -6,8 +6,10 @@ from typing import Any
 
 import homeassistant.helpers.config_validation as cv
 import voluptuous as vol
+from awesomeversion import AwesomeVersion
 from homeassistant import config_entries
 from homeassistant.const import CONF_PASSWORD, CONF_SCAN_INTERVAL, CONF_USERNAME
+from homeassistant.const import __version__ as HAVERSION
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers import selector
@@ -108,6 +110,8 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
 
     def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
         """Initialize options flow."""
+        if AwesomeVersion(HAVERSION) < "2024.11.99":
+            self.config_entry = config_entry
         self.config_entry = config_entry
 
     async def async_step_init(

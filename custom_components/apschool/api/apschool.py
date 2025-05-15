@@ -136,9 +136,8 @@ class ApschoolApiClient:
         Returns:
             Total amount still due
         """
-        url = urljoin(self._base_url,
-                      f"/ecoles/auxiliaires/525/utilisateurs/{self.current_user_id}/evenements")
-        params = {"afficherTermines": "false"}
+        url = urljoin(self._base_url, "/me/evenements")
+        params = {"paye": "false", "refuse": "false"}
 
         json_response = await self._api_wrapper(
             method="GET", url=url, data=None, headers=self._set_headers(), params=params,

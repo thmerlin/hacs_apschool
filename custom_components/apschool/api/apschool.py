@@ -136,15 +136,16 @@ class ApschoolApiClient:
         Returns:
             Total amount still due
         """
-        url = urljoin(self._base_url, "/me/evenements")
-        params = {"paye": "false", "refuse": "false"}
+        url = urljoin(self._base_url,
+                      "/mediatr-utilisateurs/evenements-impayes")
+        # params = {"paye": "false", "refuse": "false"}
 
         json_response = await self._api_wrapper(
-            method="GET", url=url, data=None, headers=self._set_headers(), params=params,
+            method="GET", url=url, data=None, headers=self._set_headers(),
         )
 
-        total_amount = sum([float(res["evenement"]["prix"])
-                            for res in json_response["items"] if res["paye"] is False])
+        total_amount = sum([float(res["totalAPayer"])
+                            for res in json_response["items"]])
 
         return total_amount
 

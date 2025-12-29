@@ -137,14 +137,14 @@ class ApschoolApiClient:
             Total amount still due
         """
         url = urljoin(self._base_url,
-                      "/mediatr-utilisateurs/evenements-impayes")
+                      f"/mediatr-utilisateurs/{self.current_user_id}/comptes")
         # params = {"paye": "false", "refuse": "false"}
 
         json_response = await self._api_wrapper(
             method="GET", url=url, data=None, headers=self._set_headers(),
         )
 
-        total_amount = sum([float(res["totalAPayer"])
+        total_amount = sum([float(res["totalAPayer"]) if "totalAPayer" in res else 0
                             for res in json_response["items"]])
 
         return total_amount
@@ -218,11 +218,11 @@ class ApschoolApiClient:
             ) from exception
         except (aiohttp.ClientError, socket.gaierror) as exception:
             raise ApschoolApiClientCommunicationError(
-                "Error fetching information",
+                "Error fetching information", exception.request_info.url, exception.message,
             ) from exception
         except ApschoolApiClientAuthenticationError as exception:
             raise exception
         except Exception as exception:  # pylint: disable=broad-except
             raise ApschoolApiClientError(
-                "Something really wrong happened!"
+                "Something really wrong happened!", exception
             ) from exception

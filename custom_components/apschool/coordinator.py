@@ -35,7 +35,8 @@ class ApschoolDataUpdateCoordinator(DataUpdateCoordinator):
     ) -> None:
         """Initialize."""
         interval = timedelta(
-            minutes=config_entry.options.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
+            minutes=config_entry.options.get(
+                CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
         )
         super().__init__(
             hass=hass, logger=LOGGER, name=DOMAIN, update_interval=interval
